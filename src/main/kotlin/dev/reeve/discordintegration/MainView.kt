@@ -1,16 +1,12 @@
 package dev.reeve.discordintegration
 
-import club.minnced.discord.rpc.DiscordEventHandlers
-import club.minnced.discord.rpc.DiscordRPC
-import club.minnced.discord.rpc.DiscordRichPresence
 import tornadofx.*
-import java.lang.Thread.sleep
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainView : View("My View") {
 	val model: DiscordIntegrationModel by inject()
-	var thread: Thread? = null
-	var running = AtomicBoolean(true)
+	var thread: Thread = Thread()
+
 
 	override fun onUndock() {
 		super.onUndock()
@@ -66,44 +62,7 @@ class MainView : View("My View") {
 		}
 		button("Save") {
 			action {
-				model.commit {
-					val integration = model.item
-				}
-
-				with(config) {
-					set(APPLICATION_KEY, model.applicationKey.get())
-					set(DETAILS, model.details.get())
-					save()
-				}
-
-				thread?.let {
-					if (thread!!.isAlive) {
-						thread!!.interrupt()
-					}
-				}
-				var lib = DiscordRPC.INSTANCE
-				var handlers = DiscordEventHandlers()
-				lib.Discord_Initialize(model.applicationKey.get(), handlers, false, null)
-				val presence = DiscordRichPresence()
-				presence.startTimestamp = System.currentTimeMillis() / 1000
-				presence.details = model.details.get()
-				presence.largeImageKey = model.largeImageKey.get()
-				presence.largeImageText = model.largeImageText.get()
-				presence.state = model.state.get()
-				lib.Discord_UpdatePresence(presence)
-
-				thread = Thread {
-					while (!Thread.currentThread().isInterrupted && running.get()) {
-						lib.Discord_RunCallbacks()
-						try {
-							sleep(2000)
-						} catch (e: InterruptedException) {
-
-						}
-					}
-				}
-				thread!!.start()
-
+				RPC(config, thread, model)
 			}
 			enableWhen(model.valid)
 		}
@@ -115,5 +74,6 @@ class MainView : View("My View") {
 		val STATE = "STATE"
 		val LARGE_IMAGE_KEY = "LARGE_IMAGE_KEY"
 		val LARGE_IMAGE_TEXT = "LARGE_IMAGE_TEXT"
+		var running = AtomicBoolean(true)
 	}
 }
