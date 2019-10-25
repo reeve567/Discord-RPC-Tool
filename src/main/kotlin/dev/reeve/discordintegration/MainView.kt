@@ -14,6 +14,7 @@ class MainView : View("My View") {
 	}
 
 	override val root = form {
+		title = "Discord RPC"
 		fieldset("Discord Integration") {
 			field("Application Key") {
 				textfield(model.applicationKey) {

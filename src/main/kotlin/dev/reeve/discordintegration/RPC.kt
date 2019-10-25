@@ -10,6 +10,9 @@ class RPC(config: ConfigProperties, var thread: Thread, val model: DiscordIntegr
 		with(config) {
 			set(MainView.APPLICATION_KEY, model.applicationKey.get())
 			set(MainView.DETAILS, model.details.get())
+			set(MainView.STATE, model.state.get())
+			set(MainView.LARGE_IMAGE_KEY, model.largeImageKey.get())
+			set(MainView.LARGE_IMAGE_TEXT, model.largeImageText.get())
 			save()
 		}
 		discord()

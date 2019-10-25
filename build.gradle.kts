@@ -3,10 +3,16 @@ import java.net.URI
 
 plugins {
 	kotlin("jvm") version "1.3.50"
+	application
 }
 
 group = "dev.reeve"
 version = "1.0-SNAPSHOT"
+
+application {
+
+	mainClassName = "dev.reeve.discordintegration.MainAppKt"
+}
 
 dependencies {
 	implementation(kotlin("stdlib-jdk8"))
