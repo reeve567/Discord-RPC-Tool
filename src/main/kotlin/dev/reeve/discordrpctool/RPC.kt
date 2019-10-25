@@ -1,4 +1,4 @@
-package dev.reeve.discordintegration
+package dev.reeve.discordrpctool
 
 import club.minnced.discord.rpc.DiscordEventHandlers
 import club.minnced.discord.rpc.DiscordRPC

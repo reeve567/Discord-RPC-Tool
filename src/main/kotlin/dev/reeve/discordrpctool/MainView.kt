@@ -1,4 +1,4 @@
-package dev.reeve.discordintegration
+package dev.reeve.discordrpctool
 
 import tornadofx.*
 import java.util.concurrent.atomic.AtomicBoolean
